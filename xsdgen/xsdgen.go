@@ -613,9 +613,8 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		}
 		switch b := base.(type) {
 		case *xsd.SimpleType:
-			cfg.debugf("complexType %[1]s extends simpleType %[2]s. Naming"+
-				" the chardata struct field after %[2]s", t.Name.Local, b.Name.Local)
-			fields = append(fields, expr, expr, gen.String(`xml:",chardata"`))
+			name := "Value"
+			fields = append(fields, namegen.unique(name), expr, gen.String(`xml:",chardata"`))
 		case xsd.Builtin:
 			if b == xsd.AnyType {
 				// extending anyType doesn't really make sense, but
