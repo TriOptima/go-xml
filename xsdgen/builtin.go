@@ -22,6 +22,7 @@ func nonTrivialBuiltin(t xsd.Type) bool {
 	}
 	switch b {
 	case xsd.Base64Binary, xsd.HexBinary,
+		xsd.Decimal,
 		xsd.Date, xsd.Time, xsd.DateTime,
 		xsd.GDay, xsd.GMonth, xsd.GMonthDay, xsd.GYear, xsd.GYearMonth:
 		return true

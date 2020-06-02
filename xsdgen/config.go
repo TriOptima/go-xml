@@ -716,6 +716,32 @@ func (cfg *Config) addStandardHelpers() {
 				`).MustDecl(),
 		},
 	}
+
+	cfg.helperTypes[xsd.XMLName(xsd.Decimal)] = spec{
+		name:    "xsd" + xsd.Decimal.String(),
+		expr:    builtinExpr(xsd.Decimal),
+		private: true,
+		xsdType: xsd.Decimal,
+		methods: []*ast.FuncDecl{
+			gen.Func("UnmarshalText").
+				Receiver("b *xsd" + xsd.Decimal.String()).
+				Args("text []byte").
+				Returns("err error").
+				Body(`
+					if f, err := strconv.ParseFloat(string(text), 64); err != nil {
+						*b = xsdDecimal(f)
+					}
+					return
+				`).MustDecl(),
+			gen.Func("MarshalText").
+				Receiver("b xsd"+xsd.Decimal.String()).
+				Returns("[]byte", "error").
+				Body(`
+					s := strconv.FormatFloat(float64(b), 'f', -1, 64)
+					return []byte(s), nil
+				`).MustDecl(),
+		},
+	}
 }
 
 // SOAP arrays (and other similar types) are complex types with a single
