@@ -728,7 +728,7 @@ func (cfg *Config) addStandardHelpers() {
 				Args("text []byte").
 				Returns("err error").
 				Body(`
-					if f, err := strconv.ParseFloat(string(text), 64); err != nil {
+					if f, err := strconv.ParseFloat(string(text), 64); err == nil {
 						*b = xsdDecimal(f)
 					}
 					return
